@@ -22,8 +22,11 @@ DIR=/sdcard/Android/fas-rs
 	until [ -d $DIR ] && [ -d /data ]; do
 		sleep 1
 	done
-
 	rm -rf $DIR
 	rm -f /data/powercfg.json
 	rm -f /data/powercfg.sh
-} & # do not block boot
+	rm /data/cur_powermode.txt
+	rm /data/powercfg
+	rm /data/cpufreq_clamping.conf
+    rm /data/module_switch.ini
+} &
