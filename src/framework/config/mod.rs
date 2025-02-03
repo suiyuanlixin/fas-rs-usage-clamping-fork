@@ -1,4 +1,4 @@
-// Copyright 2023-2024, shadow3 (@shadow3aaa)
+// Copyright 2023-2025, shadow3 (@shadow3aaa)
 //
 // This file is part of fas-rs.
 //
@@ -27,7 +27,7 @@ use log::{error, info};
 use toml::Value;
 
 use crate::framework::{error::Result, node::Mode};
-pub use data::{Config as ConfigConfig, ConfigData, ModeConfig, TemperatureThreshold};
+pub use data::{Config as ConfigConfig, ConfigData, MarginFps, ModeConfig, TemperatureThreshold};
 use read::wait_and_read;
 
 #[derive(Debug, Clone, PartialEq, Eq)]

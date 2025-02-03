@@ -1,4 +1,4 @@
-// Copyright 2023-2024, shadow3 (@shadow3aaa)
+// Copyright 2023-2025, shadow3 (@shadow3aaa)
 //
 // This file is part of fas-rs.
 //
@@ -166,7 +166,10 @@ impl Looper {
                 self.fas_state.mode = new_mode;
 
                 if self.fas_state.working_state == State::Working {
-                    self.controller_state.controller.init_game(&self.extension);
+                    self.controller_state.controller.init_game(
+                        self.fas_state.buffer.as_ref().unwrap().package_info.pid,
+                        &self.extension,
+                    );
                 }
             }
         }
@@ -209,8 +212,7 @@ impl Looper {
             return;
         }
 
-        self.controller_state.controller.refresh_cpu_usage();
-        let control = if let Some(buffer) = &self.fas_state.buffer {
+        let (control, is_janked) = if let Some(buffer) = &self.fas_state.buffer {
             let target_fps_offset = self
                 .therminal
                 .target_fps_offset(&mut self.config, self.fas_state.mode);
@@ -229,7 +231,9 @@ impl Looper {
         #[cfg(debug_assertions)]
         debug!("control: {control}khz");
 
-        self.controller_state.controller.fas_update_freq(control);
+        self.controller_state
+            .controller
+            .fas_update_freq(control, is_janked);
     }
 
     pub fn retain_topapp(&mut self) {
@@ -283,7 +287,10 @@ impl Looper {
                     self.fas_state.working_state = State::Working;
                     self.cleaner.cleanup();
                     self.controller_state.target_fps_offset = 0.0;
-                    self.controller_state.controller.init_game(&self.extension);
+                    self.controller_state.controller.init_game(
+                        self.fas_state.buffer.as_ref().unwrap().package_info.pid,
+                        &self.extension,
+                    );
                 }
             }
             State::Working => (),

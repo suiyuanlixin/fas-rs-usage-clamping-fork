@@ -1,4 +1,4 @@
-// Copyright 2023-2024, shadow3 (@shadow3aaa)
+// Copyright 2023-2025, shadow3 (@shadow3aaa)
 //
 // This file is part of fas-rs.
 //
@@ -92,10 +92,11 @@ fn load_extensions() -> Result<ExtensionMap> {
         )?;
 
         // Add in api v1
+        // Removed in v4.2.0(apiv4)
         lua.globals().set(
             "set_policy_freq_offset",
-            lua.create_function(|_, (policy, offset): (i32, isize)| {
-                helper_funs::set_policy_freq_offset(policy, offset)?;
+            lua.create_function(|_, (policy, offset)| {
+                helper_funs::set_policy_freq_offset(policy, offset);
                 Ok(())
             })?,
         )?;
@@ -103,8 +104,35 @@ fn load_extensions() -> Result<ExtensionMap> {
         // Add in api v3
         lua.globals().set(
             "set_ignore_policy",
-            lua.create_function(|_, (policy, val): (i32, bool)| {
-                helper_funs::set_ignore_policy(policy, val)?;
+            lua.create_function(|_, (policy, val)| {
+                helper_funs::set_ignore_policy(policy, val);
+                Ok(())
+            })?,
+        )?;
+
+        // Add in api v4
+        lua.globals().set(
+            "set_extra_policy_abs",
+            lua.create_function(|_, (policy, min, max)| {
+                helper_funs::set_extra_policy_abs(policy, min, max);
+                Ok(())
+            })?,
+        )?;
+
+        // Add in api v4
+        lua.globals().set(
+            "set_extra_policy_rel",
+            lua.create_function(|_, (policy, target_policy, min, max)| {
+                helper_funs::set_extra_policy_rel(policy, target_policy, min, max);
+                Ok(())
+            })?,
+        )?;
+
+        // Add in api v4
+        lua.globals().set(
+            "remove_extra_policy",
+            lua.create_function(|_, policy| {
+                helper_funs::remove_extra_policy(policy);
                 Ok(())
             })?,
         )?;

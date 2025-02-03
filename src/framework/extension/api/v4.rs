@@ -24,18 +24,19 @@ use super::{
 };
 
 #[derive(Debug, Clone)]
-pub enum ApiV1 {
+pub enum ApiV4 {
     LoadFas(pid_t, String),
     UnloadFas(pid_t, String),
     StartFas,
     StopFas,
     InitCpuFreq,
     ResetCpuFreq,
+    TargetFpsChange(u32, String),
 }
 
-impl Api for ApiV1 {
+impl Api for ApiV4 {
     fn handle_api(&self, ext: &ExtensionMap) {
-        for (extension, lua) in ext.iter().filter(|(_, lua)| get_api_version(lua) == 1) {
+        for (extension, lua) in ext.iter().filter(|(_, lua)| get_api_version(lua) == 4) {
             match self.clone() {
                 Self::LoadFas(pid, pkg) => {
                     do_callback(extension, lua, "load_fas", (pid, pkg));
@@ -54,6 +55,9 @@ impl Api for ApiV1 {
                 }
                 Self::ResetCpuFreq => {
                     do_callback(extension, lua, "reset_cpu_freq", ());
+                }
+                Self::TargetFpsChange(target_fps, pkg) => {
+                    do_callback(extension, lua, "target_fps_change", (target_fps, pkg));
                 }
             }
         }

@@ -1,4 +1,4 @@
-// Copyright 2023-2024, shadow3 (@shadow3aaa)
+// Copyright 2023-2025, shadow3 (@shadow3aaa)
 //
 // This file is part of fas-rs.
 //
@@ -39,7 +39,7 @@ impl Extension {
         let (sx, rx) = mpsc::sync_channel(16);
 
         thread::Builder::new()
-            .name("ExtensionThead".into())
+            .name("ExtensionThread".into())
             .spawn(move || core::thread(&rx))?;
 
         Ok(Self { sx })

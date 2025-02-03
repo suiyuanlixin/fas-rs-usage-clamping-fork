@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/icon.svg" width="160" height="160" style="display: block; margin: 0 auto;" alt="SVG Image">
+<img src="https://github.com/shadow3aaa/fas-rs/raw/refs/heads/master/assets/icon.svg" width="160" height="160" style="display: block; margin: 0 auto;" alt="SVG Image">
 
 # **fas-rs**
 
@@ -78,11 +78,11 @@
 
   - #### **Mode Parameter Description:**
 
-    - **margin:**
+    - **margin_fps:**
 
-      - Type: `integer`
-      - Unit: `milliseconds`
-      - Allowed frame drop margin, the smaller the margin, the higher the frame rate, the larger the margin, the more power-saving (0 <= margin < 1000)
+      - Type: `integer/float`
+        - Unit: `fps`
+        - Additional allowed frame drop
 
     - **core_temp_thresh:**
 
@@ -111,19 +111,19 @@ scene_game_list = true
 "com.tencent.tmgp.sgame" = [30, 60, 90, 120]
 
 [powersave]
-margin = 3
+margin_fps = 3
 core_temp_thresh = 80000
 
 [balance]
-margin = 2
+margin_fps = 1
 core_temp_thresh = 90000
 
 [performance]
-margin = 1
+margin_fps = 0
 core_temp_thresh = 95000
 
 [fast]
-margin = 0
+margin_fps = 0
 core_temp_thresh = 95000
 ```
 
@@ -153,10 +153,7 @@ core_temp_thresh = 95000
 
 ```bash
 # Ubuntu (NDK is required)
-apt install gcc-multilib git-lfs clang python3
-
-# ruff (Python lints & format)
-pip install ruff
+apt install gcc-multilib git-lfs
 
 # Rust (Nightly version is required)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -172,7 +169,5 @@ git clone https://github.com/shadow3aaa/fas-rs
 cd fas-rs
 
 # Compile
-python3 ./make.py build --release
-# Use the `--nightly` option when building(Some nightly flags will be added to produce smaller artifacts)
-python3 ./make.py build --release --nightly
+cargo xtask build -r
 ```

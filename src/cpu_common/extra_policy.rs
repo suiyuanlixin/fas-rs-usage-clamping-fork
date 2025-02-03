@@ -15,10 +15,22 @@
 // You should have received a copy of the GNU General Public License along
 // with fas-rs. If not, see <https://www.gnu.org/licenses/>.
 
-use std::process::Command;
+#[derive(Debug, PartialEq, Eq)]
+pub enum ExtraPolicy {
+    AbsRangeBound(AbsRangeBound),
+    RelRangeBound(RelRangeBound),
+    None,
+}
 
-pub fn setprop<S: AsRef<str>>(k: S, v: S) {
-    let key = k.as_ref();
-    let value = v.as_ref();
-    let _ = Command::new("setprop").args([key, value]).spawn();
+#[derive(Debug, PartialEq, Eq)]
+pub struct AbsRangeBound {
+    pub min: Option<isize>,
+    pub max: Option<isize>,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct RelRangeBound {
+    pub rel_to: i32,
+    pub min: Option<isize>,
+    pub max: Option<isize>,
 }
